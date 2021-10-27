@@ -1,7 +1,30 @@
 const http = require('http');
+const fs = require('fs');
 
 const server = http.createServer((request, response) => {
-	console.log(request.url, request.method, request.headers);
+	const { url, method } = request;
+	if (url === '/') {
+		response.write('<html>');
+		response.write('<head><title>Enter Message</title></head>');
+		response.write(
+			'<body><form action="/message" method="POST"><input name="message" type="text"><button type="submit">Send</button></input></form></body>'
+		);
+		response.write('</html>');
+		return response.end();
+	}
+	if ((method === 'POST', url === '/message')) {
+		fs.writeFileSync('message.txt', 'Dummy');
+		response.statusCode = 302;
+		response.setHeader('Location', '/');
+		return response.end();
+	}
+
+	response.setHeader('Content-Type', 'text/html');
+	response.write('<html>');
+	response.write('<head><title>First Page</title></head>');
+	response.write('<body><h1>Hello from Node.js Server!</h1></body>');
+	response.write('</html>');
+	response.end();
 });
 
 server.listen(3000);

@@ -18,13 +18,14 @@ const server = http.createServer((request, response) => {
 			body.push(chunk);
 			console.log(chunk);
 		});
-		request.on('end', () => {
+		return request.on('end', () => {
 			const parsedBody = Buffer.concat(body).toString();
 			const message = parsedBody.split('=')[1];
-			fs.writeFileSync('message.txt', message);
-			response.statusCode = 302;
-			response.setHeader('Location', '/');
-			return response.end();
+			fs.writeFileSync('message.txt', message, (error) => {
+				response.statusCode = 302;
+				response.setHeader('Location', '/');
+				return response.end();
+			});
 		});
 	}
 

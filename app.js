@@ -13,10 +13,19 @@ const server = http.createServer((request, response) => {
 		return response.end();
 	}
 	if ((method === 'POST', url === '/message')) {
-		fs.writeFileSync('message.txt', 'Dummy');
-		response.statusCode = 302;
-		response.setHeader('Location', '/');
-		return response.end();
+		const body = [];
+		request.on('data', (chunk) => {
+			body.push(chunk);
+			console.log(chunk);
+		});
+		request.on('end', () => {
+			const parsedBody = Buffer.concat(body).toString();
+			const message = parsedBody.split('=')[1];
+			fs.writeFileSync('message.txt', message);
+			response.statusCode = 302;
+			response.setHeader('Location', '/');
+			return response.end();
+		});
 	}
 
 	response.setHeader('Content-Type', 'text/html');

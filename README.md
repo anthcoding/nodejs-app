@@ -1,2 +1,3 @@
 # NODE APP
-Working with ejs syntax
+Working with pug and handlebars syntax
+

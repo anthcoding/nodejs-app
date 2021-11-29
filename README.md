@@ -1,3 +1,3 @@
 # NODE APP
-Working with pug and handlebars syntax
+Working with pug, handlebars syntax and ejs
 
